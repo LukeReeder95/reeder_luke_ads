@@ -12,7 +12,7 @@ int main()
     displayBoard();
     while (winner == false)
     {
-        int turncount = 0;
+        static int turncount = 0;
         printf("\nPlease enter the square(between 1-9) you'd like to choose Player %d \n", player);
         int select;
         bool validInput = false;
@@ -47,6 +47,7 @@ int main()
             displayBoard();
             turncount++;
             winner = checkWin();
+            printf("%d", turncount);
             if( winner == true)
             {
                 if(player == 1)
@@ -57,6 +58,11 @@ int main()
                 {
                     player--;
                 }
+            }
+            if(turncount == 9 && winner == false)
+            {
+                printf("\nThe game has ended as a draw");
+                return 0;
             }
         }
     }
