@@ -13,34 +13,36 @@ int main()
         int select;
         bool validInput = false;
         scanf("%d", &select);
-        while(validInput = false)
+
+        while(validInput == false)
         {
-            if (select < 0 || select > 8 || square[select] != '-')
+            // && square[select] != '-'
+            if (select >= 0 && select <= 8 && square[select] == '-')
+            {
+                validInput = true;
+            }
+            else
             {
                 printf("Selection was not valid, please try again\n");
                 scanf("%d", &select);
             }
-
+        }
+        
+        if (validInput = true)
+        {
+            if (player == 1)
+            {
+                square[select] = 'x';
+                displayBoard();
+                player++;
+            }
             else
             {
-                validInput = true;
+                square[select] = 'o';
+                displayBoard();
+                player--;
             }
         }
-
-
-        if(player == 1)
-        {
-            square[select] = 'x';
-            displayBoard();
-            player++;
-        }
-        else
-        {
-            square[select] = 'o';
-            displayBoard();
-            player--;
-        }
-
     }
     while(0 != 1);
     
