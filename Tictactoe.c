@@ -137,7 +137,7 @@ node addNode(node head, char square[9])
 {
     node temp, p;
     temp = createNode();
-    temp->data = square[9];
+    temp->square[9] = square[9];
     if(head == NULL)
     {
         head = temp;
