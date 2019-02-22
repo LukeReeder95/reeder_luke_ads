@@ -6,12 +6,43 @@ void displayBoard();
 char square[9] = {'-', '-', '-', '-', '-', '-', '-', '-', '-'};
 struct GameState
 {
-    char square[9];
+    char data[9];
     struct GameState *next;
     struct GameState *prev;
 };
 
 typedef struct GameState *node;
+
+node createNode()
+{
+    node start;
+    start = (node)malloc(sizeof(struct GameState));
+    start->next = NULL;
+    start->prev = NULL;
+    return start;
+}
+
+node addNode(node head, char values[9])
+{
+    node temp, p;
+    temp = createNode();
+    temp->data[9] = values[9];
+    if (head == NULL)
+    {
+        head = temp;
+    }
+    else
+    {
+        p = head;
+        while (p->next != NULL)
+        {
+            p = p->next;
+        }
+        p->next = temp;
+        temp->prev = p;
+    }
+    return head;
+}
 
 int main()
 {
@@ -28,7 +59,11 @@ int main()
             int turncount = 0;
             bool winner = false;
             int player = 1;
-            node createNode();
+            node currentGame;
+            currentGame = createNode();
+            node *head = NULL;
+            node *current = NULL;
+            node *last = NULL;
 
             displayBoard();
 
@@ -65,8 +100,8 @@ int main()
                         square[select-1] = 'o';
                     }
                     displayBoard();
-                    addNode(node, square[9]);
                     turncount++;
+                    //addNode(head, square[9]);
                     winner = checkWin();
                     if( winner == true)
                     {
@@ -125,32 +160,3 @@ bool checkWin()
     return false;
 }
 
-node createNode()
-{
-    node start;
-    start = (node)malloc(sizeof(struct GameState));
-    start->next = NULL;
-    start->prev = NULL;
-}
-
-node addNode(node head, char square[9])
-{
-    node temp, p;
-    temp = createNode();
-    temp->square[9] = square[9];
-    if(head == NULL)
-    {
-        head = temp;
-    }
-    else
-    {
-        p = head;
-        while(p->next !=NULL)
-        {
-            p = p->next;
-        }
-        p->next = temp;
-        temp->prev = p;
-    }
-    return head;    
-}
