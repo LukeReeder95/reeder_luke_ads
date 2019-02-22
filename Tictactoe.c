@@ -29,7 +29,6 @@ node addNode(node head, char values[9])
     for(int i = 0; i < 9; i++)
     {
         temp->data[i] = values[i];
-        printf("%c", temp->data[i]);
     }
     
     if (head == NULL)
@@ -146,22 +145,14 @@ void displayBoard()
 
 bool checkWin()
 {
-    if(square[0] == square[1] && square[1] == square[2] && square[0] != '-')
-        return true;
-    if (square[3] == square[4] && square[4] == square[5] && square[3] != '-')
-        return true;
-    if (square[6] == square[7] && square[7] == square[8] && square[6] != '-')
-        return true;
-    if (square[0] == square[3] && square[3] == square[6] && square[0] != '-')
-        return true;
-    if (square[1] == square[4] && square[4] == square[7] && square[1] != '-')
-        return true;
-    if (square[2] == square[5] && square[5] == square[8] && square[2] != '-')
-        return true;
-    if (square[0] == square[4] && square[4] == square[8] && square[0] != '-')
-        return true;
-    if (square[2] == square[4] && square[4] == square[6] && square[2] != '-')
-        return true;
+    for (int i = 0; i < 3; i++)
+    {
+        if ((square[(i * 3)] == square[(i * 3) + 1] && square[i] == square[(i * 3) + 2] && square[(i * 3)] != '-')  
+        ||(square[i] == square[i + 3] && square[i] == square[i + 6] && square[i] != '-'))
+            return true;
+    }
+        if ((square[0] == square[4] && square[4] == square[8] && square[0] != '-')
+        || (square[2] == square[4] && square[4] == square[6] && square[2] != '-'))
+            return true;
     return false;
 }
-
