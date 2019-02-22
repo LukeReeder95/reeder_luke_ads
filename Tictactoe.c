@@ -28,13 +28,7 @@ int main()
             int turncount = 0;
             bool winner = false;
             int player = 1;
-            node createNode()
-            {
-                node start;
-                start = (node)malloc(sizeof(struct GameState));
-                start->next = NULL;
-                start->prev = NULL;
-            }
+            node createNode();
 
             displayBoard();
 
@@ -71,6 +65,7 @@ int main()
                         square[select-1] = 'o';
                     }
                     displayBoard();
+                    addNode(node, square[9]);
                     turncount++;
                     winner = checkWin();
                     if( winner == true)
@@ -128,4 +123,34 @@ bool checkWin()
     if (square[2] == square[4] && square[4] == square[6] && square[2] != '-')
         return true;
     return false;
+}
+
+node createNode()
+{
+    node start;
+    start = (node)malloc(sizeof(struct GameState));
+    start->next = NULL;
+    start->prev = NULL;
+}
+
+node addNode(node head, char square[9])
+{
+    node temp, p;
+    temp = createNode();
+    temp->data = square[9];
+    if(head == NULL)
+    {
+        head = temp;
+    }
+    else
+    {
+        p = head;
+        while(p->next !=NULL)
+        {
+            p = p->next;
+        }
+        p->next = temp;
+        temp->prev = p;
+    }
+    return head;    
 }
