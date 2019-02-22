@@ -26,7 +26,12 @@ node addNode(node head, char values[9])
 {
     node temp, p;
     temp = createNode();
-    temp->data[9] = values[9];
+    for(int i = 0; i < 9; i++)
+    {
+        temp->data[i] = values[i];
+        printf("%c", temp->data[i]);
+    }
+    
     if (head == NULL)
     {
         head = temp;
@@ -77,7 +82,6 @@ int main()
 
                 while(validInput == false)
                 {
-                    // && square[select] != '-'
                     if (select >= 1 && select <= 9 && square[select -1] == '-')
                     {
                         validInput = true;
@@ -114,6 +118,7 @@ int main()
                     }
                     
                     player==1 ? player++ : player--;
+                    addNode(currentGame, square);
                 }
             }
         case 2:
