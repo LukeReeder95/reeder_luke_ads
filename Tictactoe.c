@@ -4,70 +4,94 @@
 bool checkWin();
 void displayBoard();
 char square[9] = {'-', '-', '-', '-', '-', '-', '-', '-', '-'};
+struct GameState
+{
+    char square[9];
+    struct GameState *next;
+    struct GameState *prev;
+};
+
+typedef struct GameState *node;
 
 int main()
 {
-    bool winner = false;
-    int player = 1;
-    displayBoard();
-    while (winner == false)
-    {
-        static int turncount = 0;
-        printf("\nPlease enter the square(between 1-9) you'd like to choose Player %d \n", player);
-        int select;
-        bool validInput = false;
-        scanf("%d", &select);
+    
+    
+    printf("Please select a choice from the following: 1 - Play game   2 - Exit\n");
+    int choice;
+    scanf("%d", &choice);
 
-        while(validInput == false)
-        {
-            // && square[select] != '-'
-            if (select >= 1 && select <= 9 && square[select -1] == '-')
+
+    switch(choice)
+    {
+        case 1:
+            int turncount = 0;
+            bool winner = false;
+            int player = 1;
+            node createNode()
             {
-                validInput = true;
+                node start;
+                start = (node)malloc(sizeof(struct GameState));
+                start->next = NULL;
+                start->prev = NULL;
             }
-            else
-            {
-                printf("Selection was not valid, please try again\n");
-                scanf("%d", &select);
-            }
-        }
-        
-        if (validInput = true)
-        {
-            if (player == 1)
-            {
-                square[select-1] = 'x';
-                player++;
-            }
-            else
-            {
-                square[select-1] = 'o';
-                player--;
-            }
+
             displayBoard();
-            turncount++;
-            winner = checkWin();
-            printf("%d", turncount);
-            if( winner == true)
+
+            while (winner == false)
             {
-                if(player == 1)
+                
+                printf("\nPlease enter the square(between 1-9) you'd like to choose Player %d \n", player);
+                int select;
+                bool validInput = false;
+                scanf("%d", &select);
+
+                while(validInput == false)
                 {
-                    player++;
+                    // && square[select] != '-'
+                    if (select >= 1 && select <= 9 && square[select -1] == '-')
+                    {
+                        validInput = true;
+                    }
+                    else
+                    {
+                        printf("Selection was not valid, please try again\n");
+                        scanf("%d", &select);
+                    }
                 }
-                else
+                
+                if (validInput = true)
                 {
-                    player--;
+                    if (player == 1)
+                    {
+                        square[select-1] = 'x';
+                    }
+                    else
+                    {
+                        square[select-1] = 'o';
+                    }
+                    displayBoard();
+                    turncount++;
+                    winner = checkWin();
+                    if( winner == true)
+                    {
+                        printf("\nCongratulations! Player %d wins the game!", player);
+                    }
+                    if(turncount == 9 && winner == false)
+                    {
+                        printf("\nThe game has ended as a draw");
+                        return 0;
+                    }
+                    
+                    player==1 ? player++ : player--;
                 }
             }
-            if(turncount == 9 && winner == false)
-            {
-                printf("\nThe game has ended as a draw");
-                return 0;
-            }
-        }
+        case 2:
+            printf("Thank you for playing!");
+            return 0;
+
     }
 
-    printf("\nCongratulations! Player %d wins the game!", player); 
     return 0;
 }
 

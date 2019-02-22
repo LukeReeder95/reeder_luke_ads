@@ -1,0 +1,7 @@
+Plan - Make Board - print lines to draw board with variables representing x, o, -
+Use array of characters to store game state
+Choice menu system using case statements
+Linked lists to store gamestates to allow undo/redo functions
+When dealing with undo functions, make sure to delete old redo functions if new choice is made
+Hash key linked to linked list id for recalling old games
+Add delay between moves when replaying old games
