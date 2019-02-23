@@ -1,8 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
 #include <stdbool.h>
 
 bool checkWin();
 void displayBoard();
+void clearBoard();
 char square[9] = {'-', '-', '-', '-', '-', '-', '-', '-', '-'};
 struct GameState
 {
@@ -48,82 +51,113 @@ node addNode(node head, char values[9])
     return head;
 }
 
+void printList(node p)
+{
+    if(p == NULL)
+    {
+        printf("There is not a game stored\n");
+    }
+    while(p != NULL)
+    {
+        for(int i = 0; i < 9; i++)
+        {
+            square[i] = p->data[i];
+        }
+        displayBoard();        
+        p = p->next;
+        Sleep(1000);
+    }
+}
+
 int main()
 {
-    
-    
-    printf("Please select a choice from the following: 1 - Play game   2 - Exit\n");
-    int choice;
-    scanf("%d", &choice);
-
-
-    switch(choice)
+    node currentGame;
+    currentGame = createNode();
+    node *head = NULL;
+    node *current = NULL;
+    node *last = NULL;
+    while(1)
     {
-        case 1:
-            int turncount = 0;
-            bool winner = false;
-            int player = 1;
-            node currentGame;
-            currentGame = createNode();
-            node *head = NULL;
-            node *current = NULL;
-            node *last = NULL;
+        printf("Please select a choice from the following: 1 - Play game   2 - Exit\n");
+        int choice;
+        scanf("%d", &choice);
 
-            displayBoard();
+        switch(choice)
+        {
+            case 1:
+                int turncount = 0;
+                bool winner = false;
+                int player = 1;
 
-            while (winner == false)
-            {
-                
-                printf("\nPlease enter the square(between 1-9) you'd like to choose Player %d \n", player);
-                int select;
-                bool validInput = false;
-                scanf("%d", &select);
+                clearBoard();
 
-                while(validInput == false)
+
+                displayBoard();
+
+                while (winner == false)
                 {
-                    if (select >= 1 && select <= 9 && square[select -1] == '-')
+                    
+                    printf("\nPlease enter the square(between 1-9) you'd like to choose Player %d \n", player);
+                    int select;
+                    bool validInput = false;
+                    scanf("%d", &select);
+
+                    while(validInput == false)
                     {
-                        validInput = true;
-                    }
-                    else
-                    {
-                        printf("Selection was not valid, please try again\n");
-                        scanf("%d", &select);
-                    }
-                }
-                
-                if (validInput = true)
-                {
-                    if (player == 1)
-                    {
-                        square[select-1] = 'x';
-                    }
-                    else
-                    {
-                        square[select-1] = 'o';
-                    }
-                    displayBoard();
-                    turncount++;
-                    //addNode(head, square[9]);
-                    winner = checkWin();
-                    if( winner == true)
-                    {
-                        printf("\nCongratulations! Player %d wins the game!", player);
-                    }
-                    if(turncount == 9 && winner == false)
-                    {
-                        printf("\nThe game has ended as a draw");
-                        return 0;
+                        if (select >= 1 && select <= 9 && square[select -1] == '-')
+                        {
+                            validInput = true;
+                        }
+                        else
+                        {
+                            printf("Selection was not valid, please try again\n");
+                            scanf("%d", &select);
+                        }
                     }
                     
-                    player==1 ? player++ : player--;
-                    addNode(currentGame, square);
+                    if (validInput = true)
+                    {
+                        if (player == 1)
+                        {
+                            square[select-1] = 'x';
+                        }
+                        else
+                        {
+                            square[select-1] = 'o';
+                        }
+                        displayBoard();
+                        turncount++;
+                        addNode(currentGame, square);
+                        winner = checkWin();
+                        if( winner == true)
+                        {
+                            printf("\nCongratulations! Player %d wins the game!\n", player);
+                        }
+                        if(turncount == 9 && winner == false)
+                        {
+                            printf("\nThe game has ended as a draw\n");
+                            winner = true;
+                        }
+                        
+                        player==1 ? player++ : player--;
+                    }
                 }
-            }
-        case 2:
-            printf("Thank you for playing!");
-            return 0;
-
+                break;
+            
+            case 2:
+                printf("Thank you for playing!\n");
+                exit(0);
+                break;
+            
+            case 3:
+                printf("Printing last game.\n");
+                printList(currentGame);
+                break;
+            
+            default:
+                printf("The option you have chosen was invalid, please enter a new option.\n");
+                break;
+        }
     }
 
     return 0;
@@ -155,4 +189,13 @@ bool checkWin()
         || (square[2] == square[4] && square[4] == square[6] && square[2] != '-'))
             return true;
     return false;
+}
+
+void clearBoard()
+{
+    for(int i = 0; i < 9; i++)
+    {
+        square[i] = '-';
+    }
+    
 }
