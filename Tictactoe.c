@@ -20,20 +20,19 @@ node createNode()
 {
     node start;
     start = (node)malloc(sizeof(struct GameState));
+    for (int i = 0; i < 9; i++)
+    {
+        start->data[i] = square[i];
+    }
     start->next = NULL;
     start->prev = NULL;
     return start;
 }
 
-node addNode(node head, char values[9])
+node addNode(node head)
 {
     node temp, p;
-    temp = createNode();
-    for(int i = 0; i < 9; i++)
-    {
-        temp->data[i] = values[i];
-    }
-    
+    temp = createNode();    
     if (head == NULL)
     {
         head = temp;
@@ -71,8 +70,8 @@ void printList(node p)
 
 int main()
 {
-    node currentGame;
-    currentGame = createNode();
+    node lastGame;
+    lastGame = NULL;
     node *head = NULL;
     node *current = NULL;
     node *last = NULL;
@@ -88,7 +87,8 @@ int main()
                 int turncount = 0;
                 bool winner = false;
                 int player = 1;
-
+                node currentGame;
+                currentGame = createNode();
                 clearBoard();
 
 
@@ -117,26 +117,22 @@ int main()
                     
                     if (validInput = true)
                     {
-                        if (player == 1)
-                        {
-                            square[select-1] = 'x';
-                        }
-                        else
-                        {
-                            square[select-1] = 'o';
-                        }
+                        square[select-1] = player==1 ? 'x' : 'o';
                         displayBoard();
                         turncount++;
-                        addNode(currentGame, square);
+                        addNode(currentGame);
+                        //*last = currentGame;
                         winner = checkWin();
                         if( winner == true)
                         {
                             printf("\nCongratulations! Player %d wins the game!\n", player);
+                            lastGame = currentGame;
                         }
                         if(turncount == 9 && winner == false)
                         {
                             printf("\nThe game has ended as a draw\n");
                             winner = true;
+                            lastGame = currentGame;
                         }
                         
                         player==1 ? player++ : player--;
@@ -151,7 +147,7 @@ int main()
             
             case 3:
                 printf("Printing last game.\n");
-                printList(currentGame);
+                printList(lastGame);
                 break;
             
             default:
