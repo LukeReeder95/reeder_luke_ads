@@ -23,6 +23,7 @@ node createNode()
     for (int i = 0; i < 9; i++)
     {
         start->data[i] = square[i];
+        printf("%c", start->data[i]);
     }
     start->next = NULL;
     start->prev = NULL;
@@ -68,6 +69,42 @@ void printList(node p)
     }
 }
 
+void undoMove(node p)
+{
+    if(p==NULL || p->prev == NULL)
+    {
+        printf("Cannot undo any more actions");
+    }
+    else
+    {
+        p = p->prev;
+        for (int i = 0; i < 9; i++)
+        {
+            square[i] = p->data[i];
+        }
+        displayBoard();
+        
+    }
+}
+
+void redoMove(node p)
+{
+    if (p == NULL || p->next == NULL)
+    {
+        printf("Cannot redo any more actions");
+    }
+    else
+    {
+        p = p->next;
+        for (int i = 0; i < 9; i++)
+        { 
+            square[i] = p->data[i];
+        }
+        displayBoard();
+        
+    }
+}
+
 int main()
 {
     node lastGame;
@@ -97,10 +134,11 @@ int main()
                 while (winner == false)
                 {
                     
-                    printf("\nPlease enter the square(between 1-9) you'd like to choose Player %d \n", player);
-                    int select;
+                    printf("\nPlease enter the square(between 1-9) you'd like to choose, or press Z to undo, X to redo: Player %d \n", player);
+                    char selection;
                     bool validInput = false;
-                    scanf("%d", &select);
+                    scanf("%c", &selection);
+                    int select = selection;
 
                     while(validInput == false)
                     {
@@ -108,31 +146,42 @@ int main()
                         {
                             validInput = true;
                         }
-                        else
+                        if (selection == 'z' || selection == 'x')
                         {
-                            printf("Selection was not valid, please try again\n");
+                            validInput = true;
+                        }
+                        else if(!validInput)
+                        {
+                            printf("Selection was not valid, please try again, selection was: %c\n", selection);
                             scanf("%d", &select);
                         }
                     }
                     
                     if (validInput = true)
                     {
-                        square[select-1] = player==1 ? 'x' : 'o';
-                        displayBoard();
-                        turncount++;
-                        addNode(currentGame);
-                        //*last = currentGame;
-                        winner = checkWin();
-                        if( winner == true)
+                        if (select == 'x' || select == 'z')
                         {
-                            printf("\nCongratulations! Player %d wins the game!\n", player);
-                            lastGame = currentGame;
+                            select == 'z' ? undoMove(currentGame) : redoMove(currentGame);
+                            select == 'z' ? turncount--: turncount++;         
                         }
-                        if(turncount == 9 && winner == false)
+                        else
                         {
-                            printf("\nThe game has ended as a draw\n");
-                            winner = true;
-                            lastGame = currentGame;
+                            square[select-1] = player==1 ? 'x' : 'o';
+                            displayBoard();
+                            turncount++;
+                            addNode(currentGame);
+                            winner = checkWin();
+                            if( winner == true)
+                            {
+                                printf("\nCongratulations! Player %d wins the game!\n", player);
+                                lastGame = currentGame;
+                            }
+                            if(turncount == 9 && winner == false)
+                            {
+                                printf("\nThe game has ended as a draw\n");
+                                winner = true;
+                                lastGame = currentGame;
+                            }
                         }
                         
                         player==1 ? player++ : player--;
