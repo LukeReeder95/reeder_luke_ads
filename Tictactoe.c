@@ -16,10 +16,10 @@ struct GameState
 };
 typedef struct GameState *node;
 
-//struct StartGame
+// struct StartGame
 // {
 //     int gameID;
-//     node gameStart;
+//     node *gameStart;
 //     struct StartGame *next;
 // };
 // typedef struct StartGame *GameNode;
@@ -29,14 +29,14 @@ typedef struct GameState *node;
 //     GameNode start;
 //     start = (GameNode)malloc(sizeof(struct StartGame));
 //     start->gameID = ID;
-//     start->gameStart = head;
+//     start->gameStart = *head;
 //     start->next = NULL;
 // }
 
-// GameNode addGameNode(int ID, GameNode head)
+// GameNode addGameNode(int ID, GameNode head, *node start)
 // {
 //     GameNode temp, p;
-//     temp = createGameNode(ID, head);
+//     temp = createGameNode(ID, start);
 //     if(head == NULL)
 //     {
 //         head = temp;
