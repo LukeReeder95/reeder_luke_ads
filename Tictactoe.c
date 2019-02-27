@@ -154,6 +154,7 @@ int main()
     node lastGame;
     lastGame = NULL;
     GameNode Game = NULL;
+
     while(1)
     {
         printf("Please select a choice from the following: 1 - Play game   2 - Exit\n");
@@ -169,9 +170,8 @@ int main()
                 player = 1;
                 gameID = 1;
 
-                node currentGame;
-                
-                currentGame = createNode();
+                node currentGame = NULL;
+                node currentHead = NULL;
                 clearBoard();
 
 
@@ -217,7 +217,7 @@ int main()
                                 printf("Game ending early\n");
                                 winner = true;
                                 lastGame = currentGame;
-                                addGameNode(gameID, Game, currentGame);
+                                addGameNode(gameID, Game, currentHead);
                                 break;
                             }
                             
@@ -228,17 +228,23 @@ int main()
                             displayBoard();
                             turncount++;
                             currentGame = addNode(currentGame);
+                            if (currentHead == NULL)
+                            {
+                                currentHead = currentGame;
+                            }
                             winner = checkWin();
                             if( winner == true)
                             {
                                 printf("\nCongratulations! Player %d wins the game!\n", player);
                                 lastGame = currentGame;
+                                addGameNode(gameID, Game, currentHead);
                             }
                             if(turncount == 9 && winner == false)
                             {
                                 printf("\nThe game has ended as a draw\n");
                                 winner = true;
                                 lastGame = currentGame;
+                                addGameNode(gameID, Game, currentHead);
                             }
                         }
                         
