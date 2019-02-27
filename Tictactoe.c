@@ -7,14 +7,51 @@ bool checkWin();
 void displayBoard();
 void clearBoard();
 char square[9] = {'-', '-', '-', '-', '-', '-', '-', '-', '-'};
+
 struct GameState
 {
     char data[9];
     struct GameState *next;
     struct GameState *prev;
 };
-
 typedef struct GameState *node;
+
+//struct StartGame
+// {
+//     int gameID;
+//     node gameStart;
+//     struct StartGame *next;
+// };
+// typedef struct StartGame *GameNode;
+
+// GameNode createGameNode(int ID, node head)
+// {
+//     GameNode start;
+//     start = (GameNode)malloc(sizeof(struct StartGame));
+//     start->gameID = ID;
+//     start->gameStart = head;
+//     start->next = NULL;
+// }
+
+// GameNode addGameNode(int ID, GameNode head)
+// {
+//     GameNode temp, p;
+//     temp = createGameNode(ID, head);
+//     if(head == NULL)
+//     {
+//         head = temp;
+//     }
+//     else
+//     {
+//         p = head;
+//         while(p->next != NULL)
+//         {
+//             p = p->next;
+//         }
+//         p->next = temp;
+//     }
+//     return p;
+// }
 
 node createNode()
 {
@@ -23,7 +60,6 @@ node createNode()
     for (int i = 0; i < 9; i++)
     {
         start->data[i] = square[i];
-        printf("%c", start->data[i]);
     }
     start->next = NULL;
     start->prev = NULL;
@@ -48,7 +84,7 @@ node addNode(node head)
         p->next = temp;
         temp->prev = p;
     }
-    return head;
+    return temp;
 }
 
 void printList(node p)
@@ -56,6 +92,13 @@ void printList(node p)
     if(p == NULL)
     {
         printf("There is not a game stored\n");
+    }
+    else
+    {
+        while (p->prev !=NULL)
+        {
+            p = p->prev;
+        }
     }
     while(p != NULL)
     {
@@ -69,7 +112,7 @@ void printList(node p)
     }
 }
 
-void undoMove(node p)
+node undoMove(node p)
 {
     if(p==NULL || p->prev == NULL)
     {
@@ -83,11 +126,11 @@ void undoMove(node p)
             square[i] = p->data[i];
         }
         displayBoard();
-        
     }
+    return p;
 }
 
-void redoMove(node p)
+node redoMove(node p)
 {
     if (p == NULL || p->next == NULL)
     {
@@ -101,17 +144,14 @@ void redoMove(node p)
             square[i] = p->data[i];
         }
         displayBoard();
-        
     }
+    return p;
 }
 
 int main()
 {
     node lastGame;
     lastGame = NULL;
-    node *head = NULL;
-    node *current = NULL;
-    node *last = NULL;
     while(1)
     {
         printf("Please select a choice from the following: 1 - Play game   2 - Exit\n");
@@ -131,45 +171,56 @@ int main()
 
                 displayBoard();
 
-                while (winner == false)
+                while (!winner)
                 {
                     
-                    printf("\nPlease enter the square(between 1-9) you'd like to choose, or press Z to undo, X to redo: Player %d \n", player);
-                    char selection;
+                    printf("\nPlease enter the square(between 1-9) you'd like to choose, or 0 for options: Player %d \n", player);
                     bool validInput = false;
-                    scanf("%c", &selection);
-                    int select = selection;
+                    int select;
+                    scanf("%d", &select);
 
-                    while(validInput == false)
+                    while(!validInput)
                     {
-                        if (select >= 1 && select <= 9 && square[select -1] == '-')
+                        
+                        if ((select >= 1 && select <= 9 && square[select -1] == '-') || select == 0)
                         {
                             validInput = true;
+                            break;
                         }
-                        if (selection == 'z' || selection == 'x')
+                        else
                         {
-                            validInput = true;
-                        }
-                        else if(!validInput)
-                        {
-                            printf("Selection was not valid, please try again, selection was: %c\n", selection);
+                            printf("Selection was not valid, please try again, selection was: %d\n", select);
                             scanf("%d", &select);
                         }
                     }
                     
                     if (validInput = true)
                     {
-                        if (select == 'x' || select == 'z')
+                        if (select == 0)
                         {
-                            select == 'z' ? undoMove(currentGame) : redoMove(currentGame);
-                            select == 'z' ? turncount--: turncount++;         
+                            printf("Press 1 to undo your last move, 2 to redo, or 3 to exit\n");
+                            scanf("%d", &select);
+                            if(select == 1 || select == 2)
+                            {
+                                currentGame = select==1 ? undoMove(currentGame) : redoMove(currentGame);
+                                player == 1 ? player++ : player--;
+                                select == 1 ? turncount--: turncount++;
+                            }
+                            else
+                            {
+                                printf("Game ending early\n");
+                                winner = true;
+                                lastGame = currentGame;
+                                break;
+                            }
+                            
                         }
                         else
                         {
                             square[select-1] = player==1 ? 'x' : 'o';
                             displayBoard();
                             turncount++;
-                            addNode(currentGame);
+                            currentGame = addNode(currentGame);
                             winner = checkWin();
                             if( winner == true)
                             {
