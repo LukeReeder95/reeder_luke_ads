@@ -16,42 +16,43 @@ struct GameState
 };
 typedef struct GameState *node;
 
-// struct StartGame
-// {
-//     int gameID;
-//     node *gameStart;
-//     struct StartGame *next;
-// };
-// typedef struct StartGame *GameNode;
+struct StartGame
+{
+    int gameID;
+    node gameStart;
+    struct StartGame *next;
+};
+typedef struct StartGame *GameNode;
 
-// GameNode createGameNode(int ID, node head)
-// {
-//     GameNode start;
-//     start = (GameNode)malloc(sizeof(struct StartGame));
-//     start->gameID = ID;
-//     start->gameStart = *head;
-//     start->next = NULL;
-// }
+GameNode createGameNode(int ID, node head)
+{
+    GameNode start;
+    start = (GameNode)malloc(sizeof(struct StartGame));
+    start->gameID = ID;
+    start->gameStart = head;
+    start->next = NULL;
+    return start;
+}
 
-// GameNode addGameNode(int ID, GameNode head, *node start)
-// {
-//     GameNode temp, p;
-//     temp = createGameNode(ID, start);
-//     if(head == NULL)
-//     {
-//         head = temp;
-//     }
-//     else
-//     {
-//         p = head;
-//         while(p->next != NULL)
-//         {
-//             p = p->next;
-//         }
-//         p->next = temp;
-//     }
-//     return p;
-// }
+GameNode addGameNode(int ID, GameNode head, node start)
+{
+    GameNode temp, p;
+    temp = createGameNode(ID, start);
+    if(head == NULL)
+    {
+        head = temp;
+    }
+    else
+    {
+        p = head;
+        while(p->next != NULL)
+        {
+            p = p->next;
+        }
+        p->next = temp;
+    }
+    return temp;
+}
 
 node createNode()
 {
@@ -152,6 +153,7 @@ int main()
 {
     node lastGame;
     lastGame = NULL;
+    GameNode Game = NULL;
     while(1)
     {
         printf("Please select a choice from the following: 1 - Play game   2 - Exit\n");
@@ -161,10 +163,14 @@ int main()
         switch(choice)
         {
             case 1:
-                int turncount = 0;
+                int turncount, player, gameID;
                 bool winner = false;
-                int player = 1;
+                turncount = 0;
+                player = 1;
+                gameID = 1;
+
                 node currentGame;
+                
                 currentGame = createNode();
                 clearBoard();
 
@@ -211,6 +217,7 @@ int main()
                                 printf("Game ending early\n");
                                 winner = true;
                                 lastGame = currentGame;
+                                addGameNode(gameID, Game, currentGame);
                                 break;
                             }
                             
