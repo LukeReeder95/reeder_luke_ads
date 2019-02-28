@@ -31,6 +31,7 @@ GameNode createGameNode(int ID, node head)
     start->gameID = ID;
     start->gameStart = head;
     start->next = NULL;
+    printf("Printing GameNode - %d\n", start->gameID);
     return start;
 }
 
@@ -51,6 +52,7 @@ GameNode addGameNode(int ID, GameNode head, node start)
         }
         p->next = temp;
     }
+    printf("Game successfully added to list - Game ID: %d\n", temp->gameID);
     return temp;
 }
 
@@ -113,6 +115,30 @@ void printList(node p)
     }
 }
 
+void searchList(GameNode p, int searchID)
+{
+    if(p == NULL)
+    {
+        printf("No games are currently stored.\n");
+    }
+    else
+    {
+        while(p->gameID != searchID && p->next != NULL)
+        {
+            p = p->next;
+        }
+        if(p->gameID == searchID)
+        {
+            node foundNode = p->gameStart;
+            printList(foundNode);            
+        }
+        else
+        {
+            printf("Game was not found, please try a different game\n");
+        }
+    }
+}
+
 node undoMove(node p)
 {
     if(p==NULL || p->prev == NULL)
@@ -151,26 +177,25 @@ node redoMove(node p)
 
 int main()
 {
-    node lastGame;
-    lastGame = NULL;
+    node lastGame = NULL;
     GameNode Game = NULL;
+    int gameID = 1;
 
     while(1)
     {
-        printf("Please select a choice from the following: 1 - Play game   2 - Exit\n");
+        printf("Please select a choice from the following: 1 - Play game   2 - Print previous game    3 - Exit\n");
         int choice;
         scanf("%d", &choice);
 
         switch(choice)
         {
             case 1:
-                int turncount, player, gameID;
+                int turncount, player;
                 bool winner = false;
                 turncount = 0;
                 player = 1;
-                gameID = 1;
 
-                node currentGame = NULL;
+                node currentGame = createNode();
                 node currentHead = NULL;
                 clearBoard();
 
@@ -217,7 +242,8 @@ int main()
                                 printf("Game ending early\n");
                                 winner = true;
                                 lastGame = currentGame;
-                                addGameNode(gameID, Game, currentHead);
+                                Game == NULL ? Game = addGameNode(gameID, Game, currentHead) : addGameNode(gameID, Game, currentHead);
+                                gameID++;
                                 break;
                             }
                             
@@ -237,14 +263,16 @@ int main()
                             {
                                 printf("\nCongratulations! Player %d wins the game!\n", player);
                                 lastGame = currentGame;
-                                addGameNode(gameID, Game, currentHead);
+                                Game == NULL ? Game = addGameNode(gameID, Game, currentHead) : addGameNode(gameID, Game, currentHead);
+                                gameID++;
                             }
                             if(turncount == 9 && winner == false)
                             {
                                 printf("\nThe game has ended as a draw\n");
                                 winner = true;
                                 lastGame = currentGame;
-                                addGameNode(gameID, Game, currentHead);
+                                Game == NULL ? Game = addGameNode(gameID, Game, currentHead) : addGameNode(gameID, Game, currentHead);
+                                gameID++;
                             }
                         }
                         
@@ -254,15 +282,19 @@ int main()
                 break;
             
             case 2:
-                printf("Thank you for playing!\n");
-                exit(0);
+                int searchID;
+                printf("Please enter the game ID you'd like to replay\n");
+                scanf("%d", &searchID);
+                searchList(Game, searchID);
+                // printf("Printing last game.\n");
+                // printList(lastGame);
                 break;
             
             case 3:
-                printf("Printing last game.\n");
-                printList(lastGame);
+                printf("Thank you for playing!\n");
+                exit(0);
                 break;
-            
+
             default:
                 printf("The option you have chosen was invalid, please enter a new option.\n");
                 break;
