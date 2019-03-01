@@ -31,7 +31,6 @@ GameNode createGameNode(int ID, node head)
     start->gameID = ID;
     start->gameStart = head;
     start->next = NULL;
-    printf("Printing GameNode - %d\n", start->gameID);
     return start;
 }
 
@@ -322,8 +321,8 @@ bool checkWin()
 {
     for (int i = 0; i < 3; i++)
     {
-        if ((square[(i * 3)] == square[(i * 3) + 1] && square[i] == square[(i * 3) + 2] && square[(i * 3)] != '-')  
-        ||(square[i] == square[i + 3] && square[i] == square[i + 6] && square[i] != '-'))
+        if ((square[(i * 3)] == square[(i * 3) + 1] && square[(i*3)] == square[(i * 3) + 2] && square[(i * 3)] != '-')  
+        ||(square[i] == square[(i + 3)] && square[i] == square[(i + 6)] && square[i] != '-'))
             return true;
     }
         if ((square[0] == square[4] && square[4] == square[8] && square[0] != '-')
