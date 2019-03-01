@@ -176,7 +176,6 @@ node redoMove(node p)
 
 int main()
 {
-    node lastGame = NULL;
     GameNode Game = NULL;
     int gameID = 1;
 
@@ -240,7 +239,6 @@ int main()
                             {
                                 printf("Game ending early\n");
                                 winner = true;
-                                lastGame = currentGame;
                                 Game == NULL ? Game = addGameNode(gameID, Game, currentHead) : addGameNode(gameID, Game, currentHead);
                                 gameID++;
                                 break;
@@ -261,7 +259,6 @@ int main()
                             if( winner == true)
                             {
                                 printf("\nCongratulations! Player %d wins the game!\n", player);
-                                lastGame = currentGame;
                                 Game == NULL ? Game = addGameNode(gameID, Game, currentHead) : addGameNode(gameID, Game, currentHead);
                                 gameID++;
                             }
@@ -269,7 +266,6 @@ int main()
                             {
                                 printf("\nThe game has ended as a draw\n");
                                 winner = true;
-                                lastGame = currentGame;
                                 Game == NULL ? Game = addGameNode(gameID, Game, currentHead) : addGameNode(gameID, Game, currentHead);
                                 gameID++;
                             }
@@ -285,8 +281,6 @@ int main()
                 printf("Please enter the game ID you'd like to replay\n");
                 scanf("%d", &searchID);
                 searchList(Game, searchID);
-                // printf("Printing last game.\n");
-                // printList(lastGame);
                 break;
             
             case 3:
