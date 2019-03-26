@@ -188,6 +188,7 @@ int main()
         switch(choice)
         {
             case 1:
+                clearBoard();
                 int turncount, player;
                 bool winner = false;
                 turncount = 0;
@@ -195,8 +196,6 @@ int main()
 
                 node currentGame = createNode();
                 node currentHead = NULL;
-                clearBoard();
-
 
                 displayBoard();
 

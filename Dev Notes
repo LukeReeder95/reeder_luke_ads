@@ -11,3 +11,13 @@ Add delay between moves when replaying old games
 Possible fixes - Read in as string and convert - check for undo/redo string.
 Check for 0 input - redirect to new options
 start all over
+
+-----------------------------------------------------------------------------------------------------------------
+
+AI functions
+have int array of valid inputs
+Add random number generator
+remove from valid input as int is selected
+have ai select random from valid
+place initial check for player 1-2
+if player 1 - validate input and remove from array - turns out thats a pain to do, could recursion random til hit valid input?
