@@ -233,6 +233,7 @@ int main()
                                 currentGame = select==1 ? undoMove(currentGame) : redoMove(currentGame);
                                 player == 1 ? player++ : player--;
                                 select == 1 ? turncount--: turncount++;
+                                printf("%d", player);
                             }
                             else
                             {
@@ -268,9 +269,11 @@ int main()
                                 Game == NULL ? Game = addGameNode(gameID, Game, currentHead) : addGameNode(gameID, Game, currentHead);
                                 gameID++;
                             }
+
+                            player == 1 ? player++ : player--;
                         }
                         
-                        player==1 ? player++ : player--;
+                        
                     }
                 }
                 break;
